@@ -1,0 +1,9 @@
+services:
+  chatbot:
+    build: .
+    container_name: calmnest_chatbot
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
