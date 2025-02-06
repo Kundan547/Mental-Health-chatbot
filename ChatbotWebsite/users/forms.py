@@ -2,9 +2,8 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Regexp
 from ChatbotWebsite.models import User
-
 
 # registration form
 class RegistrationForm(FlaskForm):
@@ -12,7 +11,9 @@ class RegistrationForm(FlaskForm):
         "Username", validators=[DataRequired(), Length(min=2, max=20)]
     )
     email = StringField("Email", validators=[DataRequired(), Email()])
-    password = PasswordField("Password", validators=[DataRequired(), Length(max=20)])
+    password = PasswordField(
+        "Password", validators=[DataRequired(), Length(min=8), Regexp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$', message="Password must contain at least one letter, one number, and one special character.")]
+    )
     confirm_password = PasswordField(
         "Confirm Password", validators=[DataRequired(), EqualTo("password")]
     )
@@ -36,7 +37,7 @@ class RegistrationForm(FlaskForm):
 # login form
 class LoginForm(FlaskForm):
     email = StringField("Email", validators=[DataRequired(), Email()])
-    password = PasswordField("Password", validators=[DataRequired(), Length(max=20)])
+    password = PasswordField("Password", validators=[DataRequired()])
     remember_me = BooleanField("Remember Me")
     submit = SubmitField("Login")
 
@@ -48,9 +49,7 @@ class UpdateAccountForm(FlaskForm):
     )
     email = StringField("Email", validators=[DataRequired(), Email()])
     picture = FileField(
-        "Update Profile Picture", validators=[FileAllowed(["jpg", "png"])]
-    )
-
+        "Update Profile Picture", validators=[FileAllowed(["jpg", "png"])])
     submit = SubmitField("Update")
 
     def validate_username(self, username):
@@ -85,7 +84,9 @@ class RequestResetForm(FlaskForm):
 
 # reset password form
 class ResetPasswordForm(FlaskForm):
-    password = PasswordField("Password", validators=[DataRequired(), Length(max=20)])
+    password = PasswordField(
+        "Password", validators=[DataRequired(), Length(min=8), Regexp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$', message="Password must contain at least one letter, one number, and one special character.")]
+    )
     confirm_password = PasswordField(
         "Confirm Password", validators=[DataRequired(), EqualTo("password")]
     )
