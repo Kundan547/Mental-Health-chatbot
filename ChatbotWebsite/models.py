@@ -5,10 +5,7 @@ from itsdangerous.url_safe import URLSafeTimedSerializer as Serializer
 from flask import current_app
 from flask_migrate import Migrate
 
-from ChatbotWebsite import app, db
-
-with app.app_context():
-    db.create_all()
+from ChatbotWebsite import users
 
 @login_manager.user_loader
 def load_user(user_id):
