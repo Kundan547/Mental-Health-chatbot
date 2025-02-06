@@ -3,7 +3,7 @@ from ChatbotWebsite import db, login_manager
 from flask_login import UserMixin
 from itsdangerous.url_safe import URLSafeTimedSerializer as Serializer
 from flask import current_app
-
+from flask_migrate import Migrate
 
 @login_manager.user_loader
 def load_user(user_id):
