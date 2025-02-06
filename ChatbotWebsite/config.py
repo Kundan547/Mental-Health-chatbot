@@ -1,11 +1,17 @@
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from a .env file
+load_dotenv()
 
 class Config:
-    DEBUG = False
     SECRET_KEY = os.environ.get("SECRET_KEY", "default_secret_key")
-    # Use the environment variable for the MySQL database; fallback to SQLite
-    SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI", "sqlite:///users.db")
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    
+    # SQLAlchemy Database URI
+    SQLALCHEMY_DATABASE_URI = os.environ.get(
+        "SQLALCHEMY_DATABASE_URI", "sqlite:///site.db"  # Fallback to SQLite
+    )
+    SQLALCHEMY_TRACK_MODIFICATIONS = False  # Disable modification tracking for performance
     
     # Mail configuration
     MAIL_SERVER = "smtp.gmail.com"
@@ -15,8 +21,16 @@ class Config:
     MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
     MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
 
+
 class DevelopmentConfig(Config):
     DEBUG = True
+    SQLALCHEMY_DATABASE_URI = os.environ.get(
+        "SQLALCHEMY_DATABASE_URI", "mysql+pymysql://root:password@localhost/dev_db"
+    )
+
 
 class ProductionConfig(Config):
-    pass  # Keep the default settings for production
+    DEBUG = False
+    SQLALCHEMY_DATABASE_URI = os.environ.get(
+        "SQLALCHEMY_DATABASE_URI", "mysql+pymysql://root:password@localhost/prod_db"
+    )
