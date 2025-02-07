@@ -5,6 +5,7 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from ChatbotWebsite.config import Config
 
+
 # Initialize the extensions
 db = SQLAlchemy()
 bcrypt = Bcrypt()
