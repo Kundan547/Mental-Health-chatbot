@@ -1,5 +1,5 @@
 from datetime import datetime
-from ChatbotWebsite import db, login_manager
+from ChatbotWebsite import db, login_manager, users
 from flask_login import UserMixin
 from itsdangerous.url_safe import URLSafeTimedSerializer as Serializer
 from flask import current_app
